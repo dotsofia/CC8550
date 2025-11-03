@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>{{ 'Edit' if anime else 'New' }} Anime</h2>
+<form method="post">
+  <label>Title: <input name="title" value="{{ anime.title if anime else '' }}"></label><br>
+  <label>Total episodes (empty if unknown): <input name="total_episodes" value="{{ anime.total_episodes if anime and anime.total_episodes is not none else '' }}"></label><br>
+  <label>Studio:
+    <select name="studio">
+      <option value="">--</option>
+      {% for s in studios %}
+        <option value="{{ s.id }}" {% if anime and anime.studio_id==s.id %}selected{% endif %}>{{ s.name }}</option>
+      {% endfor %}
+    </select>
+  </label><br>
+  <label>Tags (ctrl+click to select): <select name="tag_ids" multiple>
+    {% for t in tags %}
+      <option value="{{ t.id }}" {% if selected_tags and t.id in selected_tags %}selected{% endif %}>{{ t.name }}</option>
+    {% endfor %}
+  </select></label><br>
+  <button type="submit">Save</button>
+</form>
+{% endblock %}
+

@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>{{ 'Edit' if tag else 'New' }} Tag</h2>
+<form method="post">
+  <label>Name: <input name="name" value="{{ tag.name if tag else '' }}"></label>
+  <button type="submit">Save</button>
+</form>
+{% endblock %}
+

@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Import watchlist for {{ user.username }}</h2>
+<form method="post" enctype="multipart/form-data">
+  <label>File (CSV or JSON): <input type="file" name="file" accept=".csv, .json"></label><br>
+  <button type="submit">Upload & Import</button>
+</form>
+<p>CSV should include header with columns: anime_id OR anime_title, episodes_watched, score (optional), status (optional)</p>
+{% endblock %}
+

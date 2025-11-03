@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>{{ 'Edit' if user else 'New' }} User</h2>
+<form method="post">
+  <label>Username: <input name="username" value="{{ user.username if user else '' }}"></label>
+  <button type="submit">Save</button>
+</form>
+{% endblock %}
+

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>{{ 'Edit' if watch else 'Add' }} watch for {{ user.username }}</h2>
+<form method="post">
+  {% if not watch %}
+    <label>Anime:
+      <select name="anime_id">
+        {% for a in animes %}
+          <option value="{{ a.id }}">{{ a.title }}</option>
+        {% endfor %}
+      </select>
+    </label><br>
+  {% else %}
+    <div>Anime: {{ animes[0].title }}</div>
+  {% endif %}
+  <label>Episodes watched:
+    <input name="episodes_watched" value="{{ watch.episodes_watched if watch else 0 }}">
+  </label><br>
+  {% if watch %}
+    <label>Score (0-10):
+      <input name="score" value="{{ watch.score if watch.score is not none else '' }}">
+    </label><br>
+  {% endif %}
+  <button type="submit">Save</button>
+</form>
+{% endblock %}
+

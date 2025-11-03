@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Tags <a href="{{ url_for('main.tag_new') }}">[New]</a></h2>
+<table><tr><th>id</th><th>name</th><th>actions</th></tr>
+{% for t in tags %}
+<tr>
+  <td>{{ t.id }}</td><td>{{ t.name }}</td>
+  <td>
+    <a href="{{ url_for('main.tag_edit', tid=t.id) }}">edit</a> |
+    <form class="inline" action="{{ url_for('main.tag_delete', tid=t.id) }}" method="post"><button>delete</button></form>
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}
+

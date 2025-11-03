@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Animes</h2>
+
+<form method="get">
+  <input type="text" name="q" placeholder="Search title" value="{{ request.args.get('q','') }}">
+  <label>Tag:
+    <select name="tag">
+      <option value="">All</option>
+      {% for t in tags %}
+        <option value="{{ t.id }}" {% if selected_tag == t.id %}selected{% endif %}>{{ t.name }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Studio:
+    <select name="studio">
+      <option value="">All</option>
+      {% for s in studios %}
+        <option value="{{ s.id }}" {% if selected_studio == s.id %}selected{% endif %}>{{ s.name }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Order:
+    <select name="order">
+      <option value="title" {% if selected_order == "title" %}selected{% endif %}>Title</option>
+      <option value="total_episodes" {% if selected_order == "total_episodes" %}selected{% endif %}>Episodes</option>
+      <option value="id" {% if selected_order == "id" %}selected{% endif %}>ID</option>
+    </select>
+  </label>
+  <button type="submit">Apply</button>
+</form>
+
+<a href="{{ url_for('main.anime_new') }}">New Anime</a>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Title</th>
+    <th>Episodes</th>
+    <th>Studio</th>
+    <th>Actions</th>
+  </tr>
+  {% for a in animes %}
+  <tr>
+    <td>{{ a.id }}</td>
+    <td>{{ a.title }}</td>
+    <td>{% if a.total_episodes is not none %}{{ a.total_episodes }}{% else %}-{% endif %}</td>
+    <td>{% if a.studio_id %}{{ studios_map.get(a.studio_id, '') }}{% endif %}</td>
+    <td>
+      <a href="{{ url_for('main.anime_edit', aid=a.id) }}">edit</a>
+      <form method="post" action="{{ url_for('main.anime_delete', aid=a.id) }}" style="display:inline">
+        <label>force
+          <input type="checkbox" name="force" value="1">
+        </label>
+        <button type="submit" onclick="return confirm('Delete this anime?')">delete</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
+

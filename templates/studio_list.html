@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Studios <a href="{{ url_for('main.studio_new') }}">[New]</a></h2>
+<table><tr><th>id</th><th>name</th><th>actions</th></tr>
+{% for s in studios %}
+<tr>
+  <td>{{ s.id }}</td><td>{{ s.name }}</td>
+  <td>
+    <a href="{{ url_for('main.studio_edit', sid=s.id) }}">edit</a> |
+    <form class="inline" action="{{ url_for('main.studio_delete', sid=s.id) }}" method="post"><button>delete</button></form>
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}
+

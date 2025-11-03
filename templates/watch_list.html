@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Watchlist: {{ user.username }}</h2>
+
+<a href="{{ url_for('main.watch_new', uid=user.id) }}">Add Anime</a> |
+<a href="{{ url_for('main.export_watchlist', uid=user.id, format='csv') }}">Export CSV</a> |
+<a href="{{ url_for('main.export_watchlist', uid=user.id, format='json') }}">Export JSON</a> |
+<a href="{{ url_for('main.import_watchlist', uid=user.id) }}">Import</a>
+
+<form method="get" style="margin:8px 0">
+  <label>Status:
+    <select name="status">
+      <option value="">All</option>
+      <option value="watching" {% if selected_status=="watching" %}selected{% endif %}>Watching</option>
+      <option value="completed" {% if selected_status=="completed" %}selected{% endif %}>Completed</option>
+      <option value="plan_to_watch" {% if selected_status=="plan_to_watch" %}selected{% endif %}>Plan to Watch</option>
+      <option value="dropped" {% if selected_status=="dropped" %}selected{% endif %}>Dropped</option>
+    </select>
+  </label>
+  <label>Min score:
+    <input type="number" name="min_score" min="0" max="10" value="{{ selected_min_score or '' }}" style="width:60px">
+  </label>
+  <label>Order:
+    <select name="order">
+      <option value="updated_at" {% if selected_order=="updated_at" %}selected{% endif %}>Updated</option>
+      <option value="score" {% if selected_order=="score" %}selected{% endif %}>Score</option>
+      <option value="episodes_watched" {% if selected_order=="episodes_watched" %}selected{% endif %}>Episodes</option>
+    </select>
+  </label>
+  <button type="submit">Apply</button>
+</form>
+
+<table border="1" cellpadding="4" cellspacing="0">
+  <tr>
+    <th>Anime</th>
+    <th>Episodes</th>
+    <th>Score</th>
+    <th>Status</th>
+    <th>Updated</th>
+    <th>Actions</th>
+  </tr>
+  {% for w,a in items %}
+  <tr>
+    <td>{{ a.title if a else ("#" ~ w.anime_id) }}</td>
+    <td>{{ w.episodes_watched }}</td>
+    <td>{{ w.score or '-' }}</td>
+    <td>{{ w.status }}</td>
+    <td>{{ w.updated_at[:16] }}</td>
+    <td>
+      <a href="{{ url_for('main.watch_edit', wid=w.id) }}">edit</a>
+      <form method="post" action="{{ url_for('main.watch_delete', wid=w.id) }}" style="display:inline">
+        <button type="submit" onclick="return confirm('Delete this entry?')">delete</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
+

@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>{{ 'Edit' if studio else 'New' }} Studio</h2>
+<form method="post">
+  <label>Name: <input name="name" value="{{ studio.name if studio else '' }}"></label>
+  <button type="submit">Save</button>
+</form>
+{% endblock %}
+
